@@ -1,0 +1,29 @@
+{
+  "name": "DV Ai",
+  "short_name": "DV Ai",
+  "description": "Private single-owner AI workspace",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1877F2",
+  "theme_color": "#1877F2",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/C3m98rkZ/file-000000006cfc820aa0d96dec342a6c44.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://i.ibb.co/C3m98rkZ/file-000000006cfc820aa0d96dec342a6c44.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
+
+
+
+
