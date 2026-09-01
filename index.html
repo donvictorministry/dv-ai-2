@@ -1,0 +1,1691 @@
+<!--
+  PROPRIETARY SOFTWARE NOTICE
+  © 2026 Rev. Don Victor, PhD. All Rights Reserved.
+  This software and its source code are proprietary and confidential.
+  Unauthorized copying, reproduction, modification, distribution, or
+  reuse of any part of this software is strictly prohibited and may
+  result in legal action.
+
+  Date: September 1, 2026
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>DV Ai</title>
+
+  <meta name="theme-color" content="#002395" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="DV-ai" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="https://i.ibb.co/C3m98rkZ/file-000000006cfc820aa0d96dec342a6c44.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="DV Ai" />
+  <meta property="og:description" content="DV AI is a private, single-owner AI workspace built for focused, personal use. DV AI is deliberately narrow in scope: it is designed exclusively for one authorized owner, with every aspect of its architecture and functionality centered around that owner’s needs, privacy, and control." />
+  <meta property="og:image" content="https://i.ibb.co/G4JjVN53/Screenshot-20260831-224140.png/og-image.png">
+  <meta property="og:url" content="https://your-domain.com" />
+<style>
+:root {
+  --dv-accent: #002395;
+  --dv-bg: #FFFFFF;
+  --dv-bg-elevated: #F5F6F8;
+  --dv-text: #1C1E21;
+  --dv-text-secondary: #65676B;
+  --dv-border: #E4E6EB;
+  --dv-bubble-ai: #F0F2F5;
+  --dv-danger: #E41E3F;
+  --dv-font-scale: 1;
+  --dv-safe-top: env(safe-area-inset-top, 0px);
+  --dv-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+[data-dv-theme="dark"] {
+  --dv-bg: #18191A;
+  --dv-bg-elevated: #242526;
+  --dv-text: #FFFFFF;
+  --dv-text-secondary: #B0B3B8;
+  --dv-border: #3A3B3C;
+  --dv-bubble-ai: #3A3B3C;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; padding: 0; width: 100dvw; height: 100dvh; overflow: hidden;
+  overscroll-behavior: none; background: var(--dv-bg); color: var(--dv-text);
+  font-family: 'Segoe UI', Roboto, sans-serif; font-size: calc(18px * var(--dv-font-scale));
+}
+button, input, textarea { font-family: inherit; }
+.dv-hidden { display: none !important; }
+.dv-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+.dv-icon svg { width: 100%; height: 100%; }
+.dv-gate { width: 100dvw; height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(160deg, var(--dv-accent) 0%, #0a3d91 100%); }
+.dv-gate-card { width: 100%; max-width: 400px; background: var(--dv-bg); border-radius: 20px; padding: 32px 24px; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+.dv-gate-logo { width: 44px; height: 44px; margin: 0 auto 12px; color: var(--dv-accent); }
+.dv-gate-title { font-size: 1.6rem; margin: 0 0 4px; font-weight: 700; }
+.dv-gate-sub { color: var(--dv-text-secondary); margin: 0 0 24px; font-size: 0.9rem; }
+.dv-label { display: block; text-align: left; font-size: 0.85rem; color: var(--dv-text-secondary); margin-bottom: 6px; }
+.dv-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--dv-border); background: var(--dv-bg-elevated); color: var(--dv-text); font-size: 1rem; margin-bottom: 16px; min-height: 48px; }
+.dv-input-code { text-align: center; letter-spacing: 8px; font-size: 1.4rem; }
+.dv-gate-message { min-height: 20px; font-size: 0.85rem; color: var(--dv-danger); margin-top: 12px; }
+.dv-intro-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: #002366;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 32px; text-align: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.dv-intro-overlay.dv-intro-fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+.dv-intro-photo-wrap { margin-bottom: 24px; position: relative; width: 170px; height: 170px; }
+.dv-intro-photo-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 0deg, #FFFFFF, #4facfe, #FFFFFF 40%, transparent 60%, #FFFFFF);
+  animation: dv-intro-ring-spin 3.2s linear infinite;
+  padding: 3px;
+}
+.dv-intro-photo-ring::before {
+  content: ""; position: absolute; inset: 3px; border-radius: 50%; background: #002366;
+}
+@keyframes dv-intro-ring-spin { to { transform: rotate(360deg); } }
+.dv-intro-photo-placeholder {
+  position: absolute; inset: 6px; width: auto; height: auto; border-radius: 50%;
+  background: linear-gradient(145deg, #16233d, #0d1626);
+  display: flex; align-items: center; justify-content: center;
+  color: #4a6fa5; box-shadow: 0 0 22px rgba(24,119,242,0.35);
+  animation: dv-intro-pulse 2.4s ease-in-out infinite;
+  z-index: 1;
+}
+.dv-intro-photo-placeholder svg { width: 44px; height: 44px; }
+@keyframes dv-intro-pulse { 0%, 100% { opacity: 0.85; transform: scale(1); } 50% { opacity: 1; transform: scale(1.04); } }
+.dv-intro-heading {
+  font-family: 'Roboto', sans-serif; font-size: 18px; font-weight: 900;
+  line-height: 1.5; margin: 0 0 20px; max-width: 420px;
+  background: linear-gradient(90deg, #1877F2, #4facfe);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 6px rgba(24,119,242,0.35));
+}
+.dv-intro-text {
+  font-family: 'Roboto', sans-serif; color: #E8EEF7; font-size: 20px; line-height: 1.5;
+  max-width: 420px; min-height: 90px; white-space: pre-wrap; margin: 0; letter-spacing: 0.2px;
+  text-shadow: 0 0 8px rgba(232,238,247,0.2);
+}
+.dv-intro-cursor {
+  font-family: 'Roboto', sans-serif; color: #1877F2; font-size: 22px; font-weight: 500;
+  animation: dv-intro-blink 0.5s step-end infinite; margin-left: 2px;
+}
+.dv-intro-cursor.dv-hidden { display: none; }
+@keyframes dv-intro-blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+.dv-accordion-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border: 1px solid var(--dv-border); border-radius: 12px; background: var(--dv-bg-elevated); color: var(--dv-text); font-size: 1rem; font-weight: 500; cursor: pointer; min-height: 48px; }
+.dv-accordion-chevron { width: 18px; height: 18px; transition: transform 0.2s ease; }
+.dv-accordion-chevron.dv-accordion-open { transform: rotate(180deg); }
+.dv-accordion-body { margin-top: 12px; }
+.dv-btn { width: 100%; min-height: 48px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 500; cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.dv-btn-primary { background: var(--dv-accent); color: #fff; }
+.dv-btn-text { background: transparent; color: var(--dv-accent); }
+.dv-btn-danger { background: var(--dv-danger); color: #fff; }
+.dv-btn:disabled { opacity: 0.65; }
+.dv-btn-spinner {
+  display: inline-block; width: 15px; height: 15px; vertical-align: -3px;
+  border: 2px solid rgba(255,255,255,0.45); border-top-color: #fff; border-radius: 50%;
+  animation: dv-spin 0.7s linear infinite; flex-shrink: 0;
+}
+@keyframes dv-spin { to { transform: rotate(360deg); } }
+.dv-app { width: 100dvw; height: 100dvh; display: flex; flex-direction: column; background: var(--dv-bg); }
+.dv-topbar { display: flex; align-items: center; justify-content: space-between; padding: calc(10px + var(--dv-safe-top)) 8px 10px; border-bottom: 1px solid var(--dv-border); flex-shrink: 0; }
+.dv-topbar-title { font-weight: 700; font-size: 1.1rem; flex: 1; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dv-icon-btn { width: 48px; height: 48px; border: none; background: transparent; color: var(--dv-text); border-radius: 50%; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.dv-icon-btn:active { background: var(--dv-bg-elevated); }
+.dv-icon-btn .dv-icon { width: 22px; height: 22px; }
+.dv-modebar { display: flex; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--dv-border); flex-shrink: 0; overflow-x: auto; }
+.dv-mode-btn { flex: 1; min-height: 44px; border: none; border-radius: 999px; background: var(--dv-bg-elevated); color: var(--dv-text-secondary); font-size: 0.9rem; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.dv-mode-active { background: var(--dv-accent); color: #fff; }
+.dv-messages { flex: 1; overflow-y: auto; padding: 16px 12px; display: flex; flex-direction: column; gap: 14px; }
+.dv-msg { max-width: 88%; display: flex; flex-direction: column; gap: 6px; }
+.dv-msg-user { align-self: flex-end; align-items: flex-end; }
+.dv-msg-ai { align-self: flex-start; align-items: flex-start; }
+.dv-bubble { padding: 12px 16px; border-radius: 16px; font-size: 1rem; line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; }
+.dv-msg-user .dv-bubble { background: var(--dv-accent); color: #fff; border-bottom-right-radius: 4px; }
+.dv-msg-ai .dv-bubble { background: var(--dv-bubble-ai); color: var(--dv-text); border-bottom-left-radius: 4px; }
+.dv-bubble pre { background: #0d1117; color: #c9d1d9; padding: 12px; border-radius: 10px; overflow-x: auto; font-size: 0.85rem; }
+.dv-msg-actions { display: flex; gap: 6px; }
+.dv-msg-action-btn { border: none; background: transparent; color: var(--dv-text-secondary); font-size: 0.8rem; padding: 6px 10px; border-radius: 8px; cursor: pointer; min-height: 32px; display: inline-flex; align-items: center; gap: 5px; }
+.dv-msg-action-icon-only { padding: 6px; min-width: 32px; justify-content: center; }
+.dv-msg-action-btn:active { background: var(--dv-bg-elevated); }
+.dv-typing { display: flex; gap: 4px; padding: 0 20px 8px; flex-shrink: 0; }
+.dv-typing span { width: 8px; height: 8px; border-radius: 50%; background: var(--dv-text-secondary); animation: dv-bounce 1.2s infinite ease-in-out; }
+.dv-typing span:nth-child(2) { animation-delay: 0.15s; }
+.dv-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes dv-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-6px); opacity: 1; } }
+.dv-composer { display: flex; align-items: flex-end; gap: 8px; padding: 8px 10px calc(8px + var(--dv-safe-bottom)); border-top: 1px solid var(--dv-border); flex-shrink: 0; }
+.dv-composer-input { flex: 1; min-height: 48px; max-height: 30dvh; padding: 12px 16px; border-radius: 24px; border: 1px solid var(--dv-border); background: var(--dv-bg-elevated); color: var(--dv-text); font-size: 1rem; resize: none; line-height: 1.4; overflow-y: auto; }
+.dv-composer-send { background: var(--dv-accent); color: #fff; width: 44px; height: 44px; border-radius: 50%; transition: background-color 0.15s ease, transform 0.1s ease; }
+.dv-composer-send:disabled { opacity: 0.5; }
+.dv-composer-send:active:not(:disabled) { transform: scale(0.92); }
+.dv-composer-send .dv-icon { width: 20px; height: 20px; }
+.dv-composer-send .dv-btn-spinner { border-color: rgba(255,255,255,0.45); border-top-color: #fff; width: 18px; height: 18px; }
+.dv-composer-icon { color: var(--dv-text-secondary); }
+.dv-plus-wrap { position: relative; }
+.dv-plus-menu { position: absolute; bottom: 56px; left: 0; background: var(--dv-bg); border: 1px solid var(--dv-border); border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); min-width: 180px; overflow: hidden; z-index: 30; }
+.dv-plus-menu-item { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: none; background: transparent; color: var(--dv-text); font-size: 0.95rem; cursor: pointer; text-align: left; }
+.dv-plus-menu-item:active { background: var(--dv-bg-elevated); }
+.dv-plus-menu-item.dv-composer-icon-active { color: var(--dv-accent); font-weight: 600; }
+.dv-composer-icon-active { color: #fff; background: var(--dv-accent); }
+.dv-file-chip-row { display: flex; gap: 8px; padding: 8px 10px 0; flex-wrap: wrap; flex-shrink: 0; }
+.dv-file-chip { display: flex; align-items: center; gap: 6px; background: var(--dv-bg-elevated); border-radius: 999px; padding: 6px 10px; font-size: 0.8rem; max-width: 220px; }
+.dv-file-chip span.dv-file-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dv-file-chip button { border: none; background: transparent; color: var(--dv-text-secondary); cursor: pointer; display: flex; align-items: center; padding: 0; }
+.dv-msg-attachment { font-size: 0.8rem; color: var(--dv-text-secondary); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+.dv-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 40; }
+.dv-drawer { position: fixed; top: 0; bottom: 0; width: 84vw; max-width: 340px; background: var(--dv-bg); z-index: 50; display: flex; flex-direction: column; transition: transform 0.25s ease; padding-top: var(--dv-safe-top); padding-bottom: var(--dv-safe-bottom); }
+.dv-drawer-left { left: 0; transform: translateX(-100%); }
+.dv-drawer-right { right: 0; transform: translateX(100%); }
+.dv-drawer.dv-drawer-open { transform: translateX(0); }
+.dv-drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--dv-border); }
+.dv-drawer-title { font-weight: 700; font-size: 1.1rem; }
+.dv-drawer-list { flex: 1; overflow-y: auto; padding: 8px; }
+.dv-drawer-item { width: 100%; display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 12px; border: none; background: transparent; color: var(--dv-text); font-size: 1rem; border-radius: 10px; cursor: pointer; text-align: left; }
+.dv-drawer-item:active { background: var(--dv-bg-elevated); }
+.dv-drawer-item-danger { color: var(--dv-danger); }
+.dv-drawer-item-danger .dv-icon { color: var(--dv-danger); }
+.dv-drawer-item .dv-icon { color: var(--dv-text-secondary); }
+.dv-drawer-section { padding: 14px 16px 6px; }
+.dv-drawer-section-label { font-size: 0.85rem; color: var(--dv-text-secondary); display: block; margin-bottom: 8px; }
+.dv-drawer-row { display: flex; align-items: center; justify-content: space-between; }
+.dv-slider { width: 100%; accent-color: var(--dv-accent); height: 32px; }
+.dv-switch { position: relative; display: inline-block; width: 46px; height: 26px; }
+.dv-switch input { opacity: 0; width: 0; height: 0; }
+.dv-switch-slider { position: absolute; cursor: pointer; inset: 0; background: var(--dv-border); border-radius: 999px; transition: 0.2s; }
+.dv-switch-slider::before { content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.2s; }
+.dv-switch input:checked + .dv-switch-slider { background: var(--dv-accent); }
+.dv-switch input:checked + .dv-switch-slider::before { transform: translateX(20px); }
+.dv-panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 60; display: flex; align-items: flex-end; }
+.dv-panel { width: 100%; max-height: 85dvh; background: var(--dv-bg); border-radius: 20px 20px 0 0; display: flex; flex-direction: column; padding-bottom: var(--dv-safe-bottom); }
+.dv-panel-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--dv-border); }
+.dv-panel-title { font-weight: 700; font-size: 1.1rem; }
+.dv-panel-body { padding: 16px; overflow-y: auto; font-size: 0.95rem; line-height: 1.6; }
+.dv-panel-body h3 { margin-top: 0; }
+.dv-panel-body p { margin: 0 0 12px; }
+.dv-panel-body ul { margin: 0 0 12px; padding-left: 20px; }
+.dv-panel-body li { margin-bottom: 6px; }
+.dv-chat-list-item, .dv-device-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--dv-border); gap: 10px; }
+.dv-tag { font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: var(--dv-bg-elevated); color: var(--dv-text-secondary); }
+.dv-tag-current { background: var(--dv-accent); color: #fff; }
+.dv-danger-zone { border: 1px solid var(--dv-danger); border-radius: 12px; padding: 14px; margin-top: 20px; }
+.dv-danger-zone-title { color: var(--dv-danger); font-weight: 700; margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
+.dv-danger-zone p { font-size: 0.85rem; color: var(--dv-text-secondary); }
+.dv-confirm-card { background: var(--dv-bg); border-radius: 16px; padding: 20px; width: 100%; max-width: 340px; margin: auto; }
+.dv-confirm-message { margin: 0 0 16px; font-size: 1rem; }
+.dv-confirm-actions { display: flex; gap: 10px; }
+.dv-confirm-actions .dv-btn { margin-bottom: 0; }
+.dv-toast-container { position: fixed; bottom: calc(90px + var(--dv-safe-bottom)); left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 100; pointer-events: none; }
+.dv-toast { background: #1C1E21; color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 0.9rem; max-width: 90vw; text-align: center; }
+.dv-spinner { width: 32px; height: 32px; border: 3px solid var(--dv-border); border-top-color: var(--dv-accent); border-radius: 50%; animation: dv-spin 0.8s linear infinite; margin: 20px auto; }
+</style>
+</head>
+<body>
+
+<div id="dvIntroOverlay" class="dv-intro-overlay">
+  <div class="dv-intro-photo-wrap">
+    <div class="dv-intro-photo-ring"></div>
+    <div class="dv-intro-photo-placeholder">
+      <!-- Swap "your-photo.jpg" below with your real photo filename (same folder as index.html). -->
+      <span id="dvIntroPhotoFallback" style="display:flex;width:100%;height:100%;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px;"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg>
+      </span>
+      <img id="dvIntroPhoto" src="https://i.ibb.co/84dRKY60/Screenshot-20260103-005841.png" alt="Rev. Don Victor, PhD"
+           style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:none;"
+           onload="this.style.display='block'; document.getElementById('dvIntroPhotoFallback').style.display='none';"
+           onerror="this.style.display='none';" />
+    </div>
+  </div>
+  <h2 class="dv-intro-heading">Welcome to DV Ai<br>developed by Rev. Don Victor, PhD</h2>
+  <p id="dvIntroText" class="dv-intro-text"></p>
+  <span id="dvIntroCursor" class="dv-intro-cursor">|</span>
+</div>
+
+<div id="dvGate" class="dv-gate">
+  <div class="dv-gate-card">
+    <div class="dv-gate-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+    <h1 class="dv-gate-title">DV Ai</h1>
+    <div id="dvGateStep1">
+      <button id="dvBtnToggleEmailField" type="button" class="dv-accordion-toggle">
+        <span></span>
+        <span class="dv-icon dv-accordion-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+      </button>
+      <div id="dvEmailFieldWrap" class="dv-accordion-body dv-hidden">
+        <input id="dvEmailInput" class="dv-input" type="email" placeholder="you@example.com" autocomplete="email" />
+        <button id="dvBtnRequestCode" type="button" class="dv-btn dv-btn-primary">Send verification code</button>
+      </div>
+    </div>
+    <div id="dvGateStep2" class="dv-hidden">
+      <label class="dv-label" for="dvCodeInput">Enter 6-digit code</label>
+      <input id="dvCodeInput" class="dv-input dv-input-code" type="text" inputmode="numeric" maxlength="6" placeholder="......" />
+      <button id="dvBtnVerifyCode" type="button" class="dv-btn dv-btn-primary">Verify &amp; Continue</button>
+      <button id="dvBtnBackToEmail" type="button" class="dv-btn dv-btn-text">Use a different email</button>
+    </div>
+    <p id="dvGateMessage" class="dv-gate-message"></p>
+  </div>
+</div>
+
+<div id="dvApp" class="dv-app dv-hidden">
+  <header class="dv-topbar">
+    <button id="dvBtnLeftDrawer" type="button" class="dv-icon-btn" aria-label="Menu">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></span>
+    </button>
+    <button id="dvBtnNewChat" type="button" class="dv-icon-btn" aria-label="New chat">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg></span>
+    </button>
+    <div class="dv-topbar-title"><span id="dvChatTitle">DV Ai</span></div>
+    <button id="dvBtnRightDrawer" type="button" class="dv-icon-btn" aria-label="Settings">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg></span>
+    </button>
+  </header>
+
+  <nav class="dv-modebar">
+    <button type="button" class="dv-mode-btn dv-mode-active" data-mode="chat">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Chat
+    </button>
+    <button type="button" class="dv-mode-btn" data-mode="code">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg> Code
+    </button>
+    <button type="button" class="dv-mode-btn" data-mode="image">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Image
+    </button>
+  </nav>
+
+  <main id="dvMessages" class="dv-messages"></main>
+  <div id="dvTypingIndicator" class="dv-typing dv-hidden"><span></span><span></span><span></span></div>
+  <div id="dvFileChipRow" class="dv-file-chip-row dv-hidden"></div>
+  <footer class="dv-composer">
+    <input id="dvFileInput" type="file" class="dv-hidden" accept="image/*,.pdf,.txt,.csv,.json,.md" />
+    <div class="dv-plus-wrap">
+      <button id="dvBtnPlusMenu" type="button" class="dv-icon-btn dv-composer-icon" aria-label="More options">
+        <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
+      </button>
+      <div id="dvPlusMenu" class="dv-plus-menu dv-hidden">
+        <button id="dvBtnAttachFile" type="button" class="dv-plus-menu-item">
+          <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg></span> Attach file
+        </button>
+        <button id="dvBtnToggleSearch" type="button" class="dv-plus-menu-item">
+          <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span> Web search
+        </button>
+      </div>
+    </div>
+    <textarea id="dvComposerInput" class="dv-composer-input" rows="1" placeholder="Message DV Ai..."></textarea>
+    <button id="dvBtnMic" type="button" class="dv-icon-btn dv-composer-icon" aria-label="Voice input">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></span>
+    </button>
+    <button id="dvBtnSend" type="button" class="dv-icon-btn dv-composer-send" aria-label="Send">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></span>
+    </button>
+  </footer>
+</div>
+
+<div id="dvLeftDrawerOverlay" class="dv-drawer-overlay dv-hidden"></div>
+<aside id="dvLeftDrawer" class="dv-drawer dv-drawer-left">
+  <div class="dv-drawer-header"><span class="dv-drawer-title">DV Ai</span>
+    <button id="dvBtnCloseLeftDrawer" type="button" class="dv-icon-btn" aria-label="Close">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+    </button>
+  </div>
+  <nav class="dv-drawer-list">
+    <button type="button" class="dv-drawer-item" data-panel="about-us">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></span> About Us
+    </button>
+    <button type="button" class="dv-drawer-item" data-panel="about-developer">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span> About Developer
+    </button>
+    <button type="button" class="dv-drawer-item" data-panel="terms">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></span> Terms of Use
+    </button>
+    <button type="button" class="dv-drawer-item" data-panel="roadmap">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><path d="M16 6l6 6-6 6"></path></svg></span> Roadmap
+    </button>
+    <button type="button" class="dv-drawer-item" data-panel="proprietary">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M15 9.5a3.5 3.5 0 1 0 0 5"></path></svg></span> Proprietary Notice
+    </button>
+  </nav>
+</aside>
+
+<div id="dvRightDrawerOverlay" class="dv-drawer-overlay dv-hidden"></div>
+<aside id="dvRightDrawer" class="dv-drawer dv-drawer-right">
+  <div class="dv-drawer-header"><span class="dv-drawer-title">Settings</span>
+    <button id="dvBtnCloseRightDrawer" type="button" class="dv-icon-btn" aria-label="Close">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+    </button>
+  </div>
+  <div class="dv-drawer-list">
+    <button type="button" class="dv-drawer-item" data-panel="account">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="M15 8h2M15 12h2M7 16h10"></path></svg></span> User Account
+    </button>
+    <button type="button" class="dv-drawer-item" data-panel="storage">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></span> Chat Storage
+    </button>
+    <button type="button" class="dv-drawer-item" data-panel="search">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span> Search Chats
+    </button>
+    <div class="dv-drawer-section"><span class="dv-drawer-section-label">Text size</span><input id="dvFontSlider" type="range" min="0" max="4" step="1" value="1" class="dv-slider" /></div>
+    <div class="dv-drawer-section dv-drawer-row"><span class="dv-drawer-section-label">Dark mode</span><label class="dv-switch"><input id="dvDarkModeToggle" type="checkbox" /><span class="dv-switch-slider"></span></label></div>
+    <button id="dvBtnInstallApp" type="button" class="dv-drawer-item">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span> Install App
+    </button>
+    <button id="dvBtnShareApp" type="button" class="dv-drawer-item">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"></line></svg></span> Share App
+    </button>
+    <button id="dvBtnLogout" type="button" class="dv-drawer-item dv-drawer-item-danger">
+      <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></span> Logout
+    </button>
+  </div>
+</aside>
+
+<div id="dvPanelOverlay" class="dv-panel-overlay dv-hidden">
+  <div class="dv-panel">
+    <div class="dv-panel-header"><span id="dvPanelTitle" class="dv-panel-title">Panel</span>
+      <button id="dvBtnClosePanel" type="button" class="dv-icon-btn" aria-label="Close">
+        <span class="dv-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+      </button>
+    </div>
+    <div id="dvPanelBody" class="dv-panel-body"></div>
+  </div>
+</div>
+
+<div id="dvConfirmOverlay" class="dv-panel-overlay dv-hidden">
+  <div class="dv-confirm-card">
+    <p id="dvConfirmMessage" class="dv-confirm-message"></p>
+    <div id="dvConfirmExtraWrap" class="dv-hidden">
+      <input id="dvConfirmExtraInput" class="dv-input" type="text" placeholder="" />
+    </div>
+    <div class="dv-confirm-actions">
+      <button id="dvConfirmCancel" type="button" class="dv-btn dv-btn-text">Cancel</button>
+      <button id="dvConfirmOk" type="button" class="dv-btn dv-btn-danger">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div id="dvToastContainer" class="dv-toast-container"></div>
+
+<script>
+"use strict";
+
+// =============================================================================
+// DV Ai — Single-file frontend. Google Apps Script backend, no external deps.
+// =============================================================================
+var DV_GAS_URL = "https://script.google.com/macros/s/AKfycbwSzExFmWmIs-DNuBwefyAN05dw2MWsnjIirV_dwRgf7_6KaAHHdowyFI6FB9XASl2Z2A/exec";
+var DV_FONT_SCALES = [0.9, 1.0, 1.1, 1.25, 1.4];
+var DV_DB_NAME = "dv_ai_local";
+var DV_DB_VERSION = 1;
+
+function $(id) { return document.getElementById(id); }
+
+var dvState = {
+  mode: "chat",
+  currentChatId: null,
+  messages: [],
+  pendingId: null,
+  deferredInstallPrompt: null,
+  pendingFile: null,
+  searchEnabled: false,
+  recognition: null,
+  isListening: false
+};
+
+// ---------------- INDEXEDDB (local cache layer) ----------------
+var dvDbPromise = null;
+function dvOpenDb() {
+  if (dvDbPromise) return dvDbPromise;
+  dvDbPromise = new Promise(function (resolve, reject) {
+    var req = indexedDB.open(DV_DB_NAME, DV_DB_VERSION);
+    req.onupgradeneeded = function (e) {
+      var db = e.target.result;
+      if (!db.objectStoreNames.contains("chats")) db.createObjectStore("chats", { keyPath: "id" });
+      if (!db.objectStoreNames.contains("messages")) db.createObjectStore("messages", { keyPath: "chatId" });
+    };
+    req.onsuccess = function () { resolve(req.result); };
+    req.onerror = function () { reject(req.error); };
+  });
+  return dvDbPromise;
+}
+function dvIdbPutChat(chat) {
+  return dvOpenDb().then(function (db) {
+    return new Promise(function (resolve) {
+      var tx = db.transaction("chats", "readwrite");
+      tx.objectStore("chats").put(chat);
+      tx.oncomplete = function () { resolve(); };
+      tx.onerror = function () { resolve(); };
+    });
+  });
+}
+function dvIdbGetChats() {
+  return dvOpenDb().then(function (db) {
+    return new Promise(function (resolve) {
+      var tx = db.transaction("chats", "readonly");
+      var req = tx.objectStore("chats").getAll();
+      req.onsuccess = function () { resolve(req.result || []); };
+      req.onerror = function () { resolve([]); };
+    });
+  });
+}
+function dvIdbPutMessages(chatId, messages, updatedAt) {
+  return dvOpenDb().then(function (db) {
+    return new Promise(function (resolve) {
+      var tx = db.transaction("messages", "readwrite");
+      tx.objectStore("messages").put({ chatId: chatId, messages: messages, syncedUpdatedAt: updatedAt || null });
+      tx.oncomplete = function () { resolve(); };
+      tx.onerror = function () { resolve(); };
+    });
+  });
+}
+function dvIdbGetMessages(chatId) {
+  return dvOpenDb().then(function (db) {
+    return new Promise(function (resolve) {
+      var tx = db.transaction("messages", "readonly");
+      var req = tx.objectStore("messages").get(chatId);
+      req.onsuccess = function () { resolve(req.result ? req.result.messages : null); };
+      req.onerror = function () { resolve(null); };
+    });
+  });
+}
+function dvIdbGetMessagesRecord(chatId) {
+  return dvOpenDb().then(function (db) {
+    return new Promise(function (resolve) {
+      var tx = db.transaction("messages", "readonly");
+      var req = tx.objectStore("messages").get(chatId);
+      req.onsuccess = function () { resolve(req.result || null); };
+      req.onerror = function () { resolve(null); };
+    });
+  });
+}
+function dvIdbDeleteChat(chatId) {
+  return dvOpenDb().then(function (db) {
+    return new Promise(function (resolve) {
+      var tx = db.transaction(["chats", "messages"], "readwrite");
+      tx.objectStore("chats").delete(chatId);
+      tx.objectStore("messages").delete(chatId);
+      tx.oncomplete = function () { resolve(); };
+      tx.onerror = function () { resolve(); };
+    });
+  });
+}
+function dvIdbClearAll() {
+  return dvOpenDb().then(function (db) {
+    return new Promise(function (resolve) {
+      var tx = db.transaction(["chats", "messages"], "readwrite");
+      tx.objectStore("chats").clear();
+      tx.objectStore("messages").clear();
+      tx.oncomplete = function () { resolve(); };
+      tx.onerror = function () { resolve(); };
+    });
+  });
+}
+
+// ---------------- BUTTON LOADING STATE (bulletproof: always resets) ----------------
+function dvSetButtonLoading(btn, isLoading, loadingText, iconOnly) {
+  if (!btn) return;
+  if (isLoading) {
+    if (btn.dataset.originalHtml === undefined) btn.dataset.originalHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = iconOnly ? '<span class="dv-btn-spinner"></span>' : '<span class="dv-btn-spinner"></span>' + (loadingText || "Please wait...");
+  } else {
+    btn.disabled = false;
+    if (btn.dataset.originalHtml !== undefined) btn.innerHTML = btn.dataset.originalHtml;
+  }
+}
+
+// ---------------- API ----------------
+function dvGetToken() { return localStorage.getItem("dv_session_token"); }
+function dvSetToken(t) { localStorage.setItem("dv_session_token", t); }
+function dvClearToken() { localStorage.removeItem("dv_session_token"); }
+
+function dvApiCall(action, extra) {
+  extra = extra || {};
+  if (!DV_GAS_URL || DV_GAS_URL.indexOf("PASTE_YOUR") !== -1) {
+    return Promise.resolve({ ok: false, error: "Setup incomplete: the Apps Script URL hasn't been filled in yet near the top of this file (DV_GAS_URL)." });
+  }
+  var body = Object.assign({ action: action, token: dvGetToken() }, extra);
+  return fetch(DV_GAS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(body)
+  }).then(function (resp) {
+    return resp.json().catch(function () {
+      return { ok: false, error: "Server returned an unreadable response (check the Apps Script deployment)." };
+    });
+  }).then(function (data) {
+    if (!data.ok && data.error === "Unauthorized.") {
+      dvClearToken();
+      dvShowGate();
+    }
+    return data;
+  }).catch(function (err) {
+    return { ok: false, error: "Network error: " + (err && err.message ? err.message : String(err)) };
+  });
+}
+
+// ---------------- INIT ----------------
+function dvInit() {
+  dvInitTheme();
+  dvBindGateEvents();
+  dvBindAppEvents();
+  dvBindDrawerEvents();
+  dvBindConfirmModal();
+  dvBindInstallPrompt();
+  dvRunIntroTypewriter();
+
+  var token = dvGetToken();
+  if (token) { dvTryResumeSession(); } else { dvShowGate(); }
+}
+
+  var DV_INTRO_MESSAGES = [
+  "Rev. Don Victor is an ordained Reverend Minister of the Lord Jesus Christ.",
+  "A multifaceted personality, scholar, interdisciplinary researcher, trainer, web developer, and software engineer.",
+  "Building faith-driven technology\nfor six million Souls winning mandate",
+  "Ministry, coding, critical thinking, and analysis — all in one calling.",
+  "To me, faith, scholarship, and technology are pathways to global impact.",
+  "This is proprietary software.\nOwner access only. Kick off."
+];
+
+var DV_INTRO_COLORS = ["#E8EEF7", "#7FD8FF", "#FFD37F", "#9DFFB0", "#FF9FE0", "#C6A8FF"];
+
+function dvRunIntroTypewriter() {
+  var el = $("dvIntroText");
+  var cursor = $("dvIntroCursor");
+  var overlay = $("dvIntroOverlay");
+  var msgIndex = 0;
+  var i = 0;
+  var dismissed = false;
+  var loopTimer = null;
+
+  function typeNext() {
+    if (dismissed) return;
+    var fullText = DV_INTRO_MESSAGES[msgIndex];
+    if (i === 0) {
+      el.style.color = DV_INTRO_COLORS[msgIndex % DV_INTRO_COLORS.length];
+    }
+    if (i < fullText.length) {
+      el.textContent += fullText.charAt(i);
+      i++;
+      var delay = fullText.charAt(i - 1) === "\n" ? 320 : 55 + Math.random() * 55;
+      loopTimer = setTimeout(typeNext, delay);
+    } else {
+      loopTimer = setTimeout(function () {
+        if (dismissed) return;
+        // Give the reader a real pause to finish reading before erasing.
+        eraseNext();
+      }, 8600);
+    }
+  }
+
+  function eraseNext() {
+    if (dismissed) return;
+    var fullText = DV_INTRO_MESSAGES[msgIndex];
+    if (i > 0) {
+      i--;
+      el.textContent = fullText.substring(0, i);
+      loopTimer = setTimeout(eraseNext, 24);
+    } else {
+      msgIndex = (msgIndex + 1) % DV_INTRO_MESSAGES.length;
+      loopTimer = setTimeout(typeNext, 500);
+    }
+  }
+
+  typeNext();
+
+  // Triple-tap detection — only this dismisses the overlay.
+  var tapCount = 0;
+  var tapTimer = null;
+  overlay.addEventListener("click", function () {
+    tapCount++;
+    if (tapTimer) clearTimeout(tapTimer);
+    if (tapCount >= 3) {
+      dismissed = true;
+      if (loopTimer) clearTimeout(loopTimer);
+      overlay.classList.add("dv-intro-fade-out");
+      // Reveal the email accordion open and ready, per requirement.
+      var wrap = $("dvEmailFieldWrap");
+      var chevron = document.querySelector(".dv-accordion-chevron");
+      if (wrap && wrap.classList.contains("dv-hidden")) {
+        wrap.classList.remove("dv-hidden");
+        if (chevron) chevron.classList.add("dv-accordion-open");
+      }
+      setTimeout(function () { $("dvEmailInput").focus(); }, 650);
+      return;
+    }
+    tapTimer = setTimeout(function () { tapCount = 0; }, 600);
+  });
+}
+
+function dvInitTheme() {
+  var theme = localStorage.getItem("dv_pref_theme") || "light";
+  var fontScaleIdx = localStorage.getItem("dv_pref_font_scale") || "1";
+  document.documentElement.setAttribute("data-dv-theme", theme);
+  document.documentElement.style.setProperty("--dv-font-scale", DV_FONT_SCALES[parseInt(fontScaleIdx, 10)] || 1);
+  var darkToggle = $("dvDarkModeToggle");
+  if (darkToggle) darkToggle.checked = theme === "dark";
+  var fontSlider = $("dvFontSlider");
+  if (fontSlider) fontSlider.value = fontScaleIdx;
+}
+
+function dvShowGate() { $("dvGate").classList.remove("dv-hidden"); $("dvApp").classList.add("dv-hidden"); }
+function dvShowApp() { $("dvGate").classList.add("dv-hidden"); $("dvApp").classList.remove("dv-hidden"); }
+
+// ---------------- GATE / AUTH ----------------
+function dvBindGateEvents() {
+  $("dvBtnRequestCode").addEventListener("click", dvHandleRequestCode);
+  $("dvBtnVerifyCode").addEventListener("click", dvHandleVerifyCode);
+  $("dvBtnBackToEmail").addEventListener("click", function () {
+    $("dvGateStep2").classList.add("dv-hidden");
+    $("dvGateStep1").classList.remove("dv-hidden");
+    $("dvGateMessage").textContent = "";
+  });
+  $("dvCodeInput").addEventListener("keydown", function (e) { if (e.key === "Enter") dvHandleVerifyCode(); });
+  $("dvEmailInput").addEventListener("keydown", function (e) { if (e.key === "Enter") dvHandleRequestCode(); });
+
+  $("dvBtnToggleEmailField").addEventListener("click", function () {
+    var wrap = $("dvEmailFieldWrap");
+    var chevron = document.querySelector(".dv-accordion-chevron");
+    var opening = wrap.classList.contains("dv-hidden");
+    wrap.classList.toggle("dv-hidden");
+    chevron.classList.toggle("dv-accordion-open", opening);
+    if (opening) $("dvEmailInput").focus();
+  });
+}
+
+function dvDeviceLabel() {
+  var ua = navigator.userAgent;
+  var label = "Android device";
+  if (/Pixel/i.test(ua)) label = "Pixel phone";
+  else if (/SM-/i.test(ua)) label = "Samsung phone";
+  return label + " \u2014 " + new Date().toLocaleDateString();
+}
+
+function dvHandleRequestCode() {
+  var email = $("dvEmailInput").value.trim();
+  if (!email) { $("dvGateMessage").textContent = "Please enter an email."; return; }
+
+  var btn = $("dvBtnRequestCode");
+  dvSetButtonLoading(btn, true, "Sending code...");
+  $("dvGateMessage").textContent = "";
+
+  dvApiCall("requestCode", { email: email, deviceName: dvDeviceLabel() })
+    .then(function (res) {
+      if (res.ok) {
+        dvState.pendingId = res.pendingId || null;
+        $("dvGateStep1").classList.add("dv-hidden");
+        $("dvGateStep2").classList.remove("dv-hidden");
+        $("dvGateMessage").style.color = "";
+        $("dvGateMessage").textContent = res.message || "Code sent if this email is authorized.";
+        $("dvCodeInput").focus();
+      } else {
+        $("dvGateMessage").textContent = res.error || "Unable to send code.";
+      }
+    })
+    .catch(function (err) {
+      $("dvGateMessage").textContent = "Unexpected error: " + (err && err.message ? err.message : String(err));
+    })
+    .finally(function () {
+      dvSetButtonLoading(btn, false);
+    });
+}
+
+function dvHandleVerifyCode() {
+  var code = $("dvCodeInput").value.trim();
+  if (!code || code.length !== 6) { $("dvGateMessage").textContent = "Enter the 6-digit code."; return; }
+  if (!dvState.pendingId) { $("dvGateMessage").textContent = "Please request a new code."; return; }
+
+  var btn = $("dvBtnVerifyCode");
+  dvSetButtonLoading(btn, true, "Verifying...");
+
+  dvApiCall("verifyCode", { pendingId: dvState.pendingId, code: code, deviceName: dvDeviceLabel() })
+    .then(function (res) {
+      if (res.ok && res.token) {
+        dvSetToken(res.token);
+        return dvPostAuthInit();
+      } else {
+        $("dvGateMessage").textContent = res.error || "Verification failed.";
+      }
+    })
+    .catch(function (err) {
+      $("dvGateMessage").textContent = "Unexpected error: " + (err && err.message ? err.message : String(err));
+    })
+    .finally(function () {
+      dvSetButtonLoading(btn, false);
+    });
+}
+
+function dvTryResumeSession() {
+  dvApiCall("me").then(function (res) {
+    if (res.ok) { dvPostAuthInit(); } else { dvClearToken(); dvShowGate(); }
+  });
+}
+
+function dvPostAuthInit() {
+  dvShowApp();
+  dvStartNewChat();
+  dvSyncAllChatsForOffline(); // fire-and-forget — don't block the UI on this
+  return Promise.resolve();
+}
+
+// ---------------- FULL OFFLINE SYNC ----------------
+// Fetches every chat's complete messages into IndexedDB, not just the ones
+// the user happens to open. Runs quietly in the background after login so
+// the whole chat history is available offline, not just previously-viewed chats.
+function dvSyncAllChatsForOffline() {
+  dvApiCall("listChats").then(function (listRes) {
+    if (!listRes.ok || !listRes.chats) return;
+
+    listRes.chats.forEach(function (c) {
+      dvIdbPutChat({ id: c.id, title: c.title, mode: c.mode, updatedAt: c.updatedAt });
+    });
+
+    // Fetch each chat's messages one at a time (gentle on the backend and
+    // its rate limits) rather than firing them all simultaneously.
+    var i = 0;
+    function syncNext() {
+      if (i >= listRes.chats.length) return;
+      var chat = listRes.chats[i];
+      i++;
+      dvIdbGetMessagesRecord(chat.id).then(function (existingRecord) {
+        // Skip re-fetching a chat whose local copy is already current.
+        if (existingRecord && existingRecord.syncedUpdatedAt === chat.updatedAt) {
+          syncNext();
+          return;
+        }
+        dvApiCall("getChat", { chatId: chat.id }).then(function (res) {
+          if (res.ok && res.messages) {
+            var messages = res.messages.map(function (m) { return { role: m.role, content: m.content, createdAt: m.createdAt }; });
+            dvIdbPutMessages(chat.id, messages, chat.updatedAt);
+          }
+        }).finally(syncNext);
+      }).catch(syncNext);
+    }
+    syncNext();
+  });
+}
+
+// ---------------- MODE / COMPOSER ----------------
+function dvBindAppEvents() {
+  var modeBtns = document.querySelectorAll(".dv-mode-btn");
+  for (var i = 0; i < modeBtns.length; i++) {
+    modeBtns[i].addEventListener("click", function () { dvSwitchMode(this.dataset.mode); });
+  }
+  $("dvBtnSend").addEventListener("click", dvHandleSend);
+  $("dvComposerInput").addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); dvHandleSend(); }
+  });
+  $("dvComposerInput").addEventListener("input", dvAutoGrowTextarea);
+  $("dvBtnNewChat").addEventListener("click", dvStartNewChat);
+
+  $("dvBtnAttachFile").addEventListener("click", function () { $("dvFileInput").click(); dvClosePlusMenu(); });
+  $("dvFileInput").addEventListener("change", dvHandleFileSelected);
+
+  $("dvBtnToggleSearch").addEventListener("click", function () {
+    dvState.searchEnabled = !dvState.searchEnabled;
+    $("dvBtnToggleSearch").classList.toggle("dv-composer-icon-active", dvState.searchEnabled);
+    dvShowToast(dvState.searchEnabled ? "Web search enabled for next message." : "Web search off.");
+    dvClosePlusMenu();
+  });
+
+  $("dvBtnPlusMenu").addEventListener("click", function (e) {
+    e.stopPropagation();
+    $("dvPlusMenu").classList.toggle("dv-hidden");
+  });
+  document.addEventListener("click", function (e) {
+    if (!$("dvPlusMenu").classList.contains("dv-hidden") && !$("dvPlusMenu").contains(e.target) && e.target !== $("dvBtnPlusMenu")) {
+      dvClosePlusMenu();
+    }
+  });
+
+  dvInitVoiceInput();
+  $("dvBtnMic").addEventListener("click", dvHandleMicToggle);
+}
+
+function dvAutoGrowTextarea() {
+  var el = $("dvComposerInput");
+  el.style.height = "auto";
+  var maxPx = window.innerHeight * 0.30;
+  el.style.height = Math.min(el.scrollHeight, maxPx) + "px";
+}
+
+// ---------------- FILE PICKER ----------------
+function dvClosePlusMenu() {
+  $("dvPlusMenu").classList.add("dv-hidden");
+}
+
+function dvHandleFileSelected(e) {
+  var file = e.target.files && e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 4 * 1024 * 1024) {
+    dvShowToast("File too large. Please choose a file under 4MB.");
+    $("dvFileInput").value = "";
+    return;
+  }
+
+  var reader = new FileReader();
+  reader.onload = function () {
+    dvState.pendingFile = {
+      name: file.name,
+      type: file.type || "application/octet-stream",
+      dataUrl: reader.result
+    };
+    dvRenderFileChip();
+  };
+  reader.onerror = function () {
+    dvShowToast("Unable to read file.");
+  };
+  reader.readAsDataURL(file);
+  $("dvFileInput").value = "";
+}
+
+function dvRenderFileChip() {
+  var row = $("dvFileChipRow");
+  if (!dvState.pendingFile) {
+    row.classList.add("dv-hidden");
+    row.innerHTML = "";
+    return;
+  }
+  row.classList.remove("dv-hidden");
+  row.innerHTML =
+    '<div class="dv-file-chip">' +
+    '<span class="dv-icon" style="width:14px;height:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></span>' +
+    '<span class="dv-file-chip-name">' + dvEscapeHtml(dvState.pendingFile.name) + '</span>' +
+    '<button type="button" id="dvBtnRemoveFile" aria-label="Remove file"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>' +
+    '</div>';
+  $("dvBtnRemoveFile").addEventListener("click", function () {
+    dvState.pendingFile = null;
+    dvRenderFileChip();
+  });
+}
+
+// ---------------- VOICE INPUT ----------------
+function dvInitVoiceInput() {
+  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    $("dvBtnMic").style.display = "none";
+    return;
+  }
+  var recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = "en-US";
+
+  recognition.onresult = function (event) {
+    var transcript = event.results[0][0].transcript;
+    var input = $("dvComposerInput");
+    input.value = (input.value ? input.value + " " : "") + transcript;
+    dvAutoGrowTextarea();
+  };
+  recognition.onerror = function () {
+    dvShowToast("Voice input failed. Please try again.");
+  };
+  recognition.onend = function () {
+    dvState.isListening = false;
+    $("dvBtnMic").classList.remove("dv-composer-icon-active");
+  };
+
+  dvState.recognition = recognition;
+}
+
+function dvHandleMicToggle() {
+  if (!dvState.recognition) {
+    dvShowToast("Voice input is not supported on this browser.");
+    return;
+  }
+  if (dvState.isListening) {
+    dvState.recognition.stop();
+    dvState.isListening = false;
+    $("dvBtnMic").classList.remove("dv-composer-icon-active");
+  } else {
+    try {
+      dvState.recognition.start();
+      dvState.isListening = true;
+      $("dvBtnMic").classList.add("dv-composer-icon-active");
+    } catch (err) {
+      dvShowToast("Unable to start voice input.");
+    }
+  }
+}
+
+function dvSwitchMode(mode) {
+  dvState.mode = mode;
+  var btns = document.querySelectorAll(".dv-mode-btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle("dv-mode-active", btns[i].dataset.mode === mode);
+  }
+  $("dvComposerInput").placeholder = mode === "code" ? "Ask for code, a fix, or an explanation..." : "Message DV Ai...";
+}
+
+function dvStartNewChat() {
+  dvState.currentChatId = null;
+  dvState.messages = [];
+  $("dvChatTitle").textContent = "DV Ai";
+  dvRenderMessages();
+}
+
+// ---------------- SEND / AI ----------------
+function dvHandleSend() {
+  var input = $("dvComposerInput");
+  var text = input.value.trim();
+  var attachedFile = dvState.pendingFile;
+  if (!text && !attachedFile) return;
+
+  input.value = "";
+  dvAutoGrowTextarea();
+  dvState.pendingFile = null;
+  dvRenderFileChip();
+
+  var sendBtn = $("dvBtnSend");
+  dvSetButtonLoading(sendBtn, true, null, true);
+
+  var outgoingText = text;
+  if (attachedFile) {
+    if (attachedFile.type.indexOf("image/") === 0) {
+      outgoingText = (text ? text + "\n\n" : "") + "![" + attachedFile.name + "](" + attachedFile.dataUrl + ")";
+    } else {
+      outgoingText = (text ? text + "\n\n" : "") + "[Attached file: " + attachedFile.name + "]";
+    }
+  }
+  if (dvState.searchEnabled) {
+    outgoingText = "[Web search requested] " + outgoingText;
+  }
+
+  var displayMsg = { role: "user", content: outgoingText, createdAt: Date.now() };
+  dvState.messages.push(displayMsg);
+  dvRenderMessages();
+  dvScrollToBottom();
+
+  $("dvTypingIndicator").classList.remove("dv-hidden");
+
+  dvApiCall("aiChat", {
+    mode: dvState.mode,
+    messages: dvState.messages.map(function (m) { return { role: m.role, content: m.content }; })
+  }).then(function (res) {
+    var replyText = res.ok ? res.text : (res.error || "Sorry, something went wrong.");
+    dvState.messages.push({ role: "assistant", content: replyText, createdAt: Date.now() });
+    dvRenderMessages();
+    dvScrollToBottom();
+    if (res.ok) return dvPersistCurrentChat();
+  }).catch(function (err) {
+    dvState.messages.push({ role: "assistant", content: "Unexpected error: " + (err && err.message ? err.message : String(err)), createdAt: Date.now() });
+    dvRenderMessages();
+  }).finally(function () {
+    $("dvTypingIndicator").classList.add("dv-hidden");
+    dvSetButtonLoading(sendBtn, false);
+  });
+}
+
+function dvPersistCurrentChat() {
+  var title = ((dvState.messages[0] && dvState.messages[0].content) || "New chat").slice(0, 60);
+  return dvApiCall("saveChat", {
+    chatId: dvState.currentChatId,
+    title: title,
+    mode: dvState.mode,
+    messages: dvState.messages
+  }).then(function (res) {
+    if (res.ok) {
+      dvState.currentChatId = res.chatId;
+      $("dvChatTitle").textContent = title;
+      // Write-through to IndexedDB so the local cache stays in sync with Drive.
+      var savedAt = Date.now();
+      dvIdbPutChat({ id: res.chatId, title: title, mode: dvState.mode, updatedAt: savedAt });
+      dvIdbPutMessages(res.chatId, dvState.messages, savedAt);
+    }
+  });
+}
+
+// ---------------- RENDER ----------------
+function dvEscapeHtml(str) {
+  var div = document.createElement("div");
+  div.textContent = str || "";
+  return div.innerHTML;
+}
+
+function dvRenderMarkdownLite(text) {
+  if (!text) return "";
+  var escaped = dvEscapeHtml(text);
+  escaped = escaped.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; border-radius: 8px; display: block; margin-top: 8px;" />');
+  escaped = escaped.replace(/```([\s\S]*?)```/g, function (m, code) { return "<pre><code>" + code.trim() + "</code></pre>"; });
+  escaped = escaped.replace(/`([^`]+)`/g, "<code>$1</code>");
+  escaped = escaped.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  return escaped;
+}
+
+function dvRenderMessages() {
+  var container = $("dvMessages");
+  container.innerHTML = "";
+  dvState.messages.forEach(function (msg) {
+    var wrap = document.createElement("div");
+    wrap.className = "dv-msg " + (msg.role === "user" ? "dv-msg-user" : "dv-msg-ai");
+    var bubble = document.createElement("div");
+    bubble.className = "dv-bubble";
+    bubble.innerHTML = dvRenderMarkdownLite(msg.content);
+    wrap.appendChild(bubble);
+
+    if (msg.role === "assistant" && msg.content) {
+      var actions = document.createElement("div");
+      actions.className = "dv-msg-actions";
+
+      var thumbUpBtn = dvMakeIconActionBtn(
+        '<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>',
+        "Good response"
+      );
+      thumbUpBtn.addEventListener("click", function () { dvShowToast("Thanks for the feedback."); });
+      actions.appendChild(thumbUpBtn);
+
+      var thumbDownBtn = dvMakeIconActionBtn(
+        '<path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path>',
+        "Bad response"
+      );
+      thumbDownBtn.addEventListener("click", function () { dvShowToast("Thanks for the feedback."); });
+      actions.appendChild(thumbDownBtn);
+
+      var regenBtn = dvMakeIconActionBtn(
+        '<polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>',
+        "Regenerate"
+      );
+      (function (msgIdx) {
+        regenBtn.addEventListener("click", function () { dvRegenerateFrom(msgIdx); });
+      })(dvState.messages.indexOf(msg));
+      actions.appendChild(regenBtn);
+
+      var shareBtn = dvMakeIconActionBtn(
+        '<path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line>',
+        "Share"
+      );
+      (function (content) {
+        shareBtn.addEventListener("click", function () { dvShareText(content); });
+      })(msg.content);
+      actions.appendChild(shareBtn);
+
+      var copyBtn = dvMakeIconActionBtn(
+        '<rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>',
+        "Copy"
+      );
+      (function (content) {
+        copyBtn.addEventListener("click", function () { dvCopyText(content); });
+      })(msg.content);
+      actions.appendChild(copyBtn);
+
+      var moreBtn = dvMakeIconActionBtn(
+        '<circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle>',
+        "More"
+      );
+      (function (content) {
+        moreBtn.addEventListener("click", function () { dvShowMessageMoreMenu(content); });
+      })(msg.content);
+      actions.appendChild(moreBtn);
+
+      wrap.appendChild(actions);
+    }
+    container.appendChild(wrap);
+  });
+}
+
+function dvMakeIconActionBtn(svgInner, label) {
+  var btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "dv-msg-action-btn dv-msg-action-icon-only";
+  btn.setAttribute("aria-label", label);
+  btn.innerHTML = '<span class="dv-icon" style="width:16px;height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + svgInner + '</svg></span>';
+  return btn;
+}
+
+function dvRegenerateFrom(msgIndex) {
+  if (msgIndex < 0 || dvState.messages[msgIndex].role !== "assistant") return;
+  var priorMessages = dvState.messages.slice(0, msgIndex);
+  dvState.messages = priorMessages;
+  dvRenderMessages();
+  $("dvTypingIndicator").classList.remove("dv-hidden");
+
+  dvApiCall("aiChat", {
+    mode: dvState.mode,
+    messages: priorMessages.map(function (m) { return { role: m.role, content: m.content }; })
+  }).then(function (res) {
+    var replyText = res.ok ? res.text : (res.error || "Sorry, something went wrong.");
+    dvState.messages.push({ role: "assistant", content: replyText, createdAt: Date.now() });
+    dvRenderMessages();
+    dvScrollToBottom();
+    if (res.ok) return dvPersistCurrentChat();
+  }).catch(function () {
+    dvShowToast("Regeneration failed.");
+  }).finally(function () {
+    $("dvTypingIndicator").classList.add("dv-hidden");
+  });
+}
+
+function dvShareText(text) {
+  if (navigator.share) {
+    navigator.share({ text: text }).catch(function () { /* user cancelled — no-op */ });
+  } else {
+    dvCopyText(text);
+  }
+}
+
+function dvShowMessageMoreMenu(content) {
+  dvShowConfirm("More options are not yet available for individual messages.", null, function () {});
+}
+
+function dvScrollToBottom() {
+  var c = $("dvMessages");
+  c.scrollTop = c.scrollHeight;
+}
+
+function dvCopyText(text) {
+  navigator.clipboard.writeText(text).then(function () {
+    dvShowToast("Copied to clipboard.");
+  }).catch(function () {
+    dvShowToast("Unable to copy.");
+  });
+}
+
+// ---------------- DRAWERS ----------------
+function dvBindDrawerEvents() {
+  $("dvBtnLeftDrawer").addEventListener("click", function () { dvOpenDrawer("left"); });
+  $("dvBtnCloseLeftDrawer").addEventListener("click", function () { dvCloseDrawer("left"); });
+  $("dvLeftDrawerOverlay").addEventListener("click", function () { dvCloseDrawer("left"); });
+  $("dvBtnRightDrawer").addEventListener("click", function () { dvOpenDrawer("right"); });
+  $("dvBtnCloseRightDrawer").addEventListener("click", function () { dvCloseDrawer("right"); });
+  $("dvRightDrawerOverlay").addEventListener("click", function () { dvCloseDrawer("right"); });
+
+  var panelBtns = document.querySelectorAll(".dv-drawer-item[data-panel]");
+  for (var i = 0; i < panelBtns.length; i++) {
+    panelBtns[i].addEventListener("click", function () { dvOpenPanel(this.dataset.panel); });
+  }
+
+  $("dvBtnClosePanel").addEventListener("click", dvClosePanel);
+  $("dvPanelOverlay").addEventListener("click", function (e) { if (e.target === $("dvPanelOverlay")) dvClosePanel(); });
+  $("dvDarkModeToggle").addEventListener("change", function (e) {
+    var theme = e.target.checked ? "dark" : "light";
+    localStorage.setItem("dv_pref_theme", theme);
+    document.documentElement.setAttribute("data-dv-theme", theme);
+  });
+  $("dvFontSlider").addEventListener("input", function (e) {
+    localStorage.setItem("dv_pref_font_scale", e.target.value);
+    document.documentElement.style.setProperty("--dv-font-scale", DV_FONT_SCALES[parseInt(e.target.value, 10)]);
+  });
+  $("dvBtnInstallApp").addEventListener("click", dvHandleInstallApp);
+  $("dvBtnShareApp").addEventListener("click", dvHandleShareApp);
+  $("dvBtnLogout").addEventListener("click", dvHandleLogout);
+}
+
+function dvOpenDrawer(side) {
+  var drawer = side === "left" ? $("dvLeftDrawer") : $("dvRightDrawer");
+  var overlay = side === "left" ? $("dvLeftDrawerOverlay") : $("dvRightDrawerOverlay");
+  overlay.classList.remove("dv-hidden");
+  drawer.classList.add("dv-drawer-open");
+}
+function dvCloseDrawer(side) {
+  var drawer = side === "left" ? $("dvLeftDrawer") : $("dvRightDrawer");
+  var overlay = side === "left" ? $("dvLeftDrawerOverlay") : $("dvRightDrawerOverlay");
+  overlay.classList.add("dv-hidden");
+  drawer.classList.remove("dv-drawer-open");
+}
+
+// ---------------- PANELS ----------------
+var DV_INFO_PANELS = {
+  "about-us": {
+    title: "About Us",
+    html: "<h3>About Us</h3>" +
+      "<p>DV AI is a private, single-owner AI workspace built for focused, personal use. Unlike general-purpose AI platforms designed to serve millions of users simultaneously, DV AI is deliberately narrow in scope: it is designed exclusively for one authorized owner, with every aspect of its architecture and functionality centered around that owner’s needs, privacy, and control.</p>" +
+      "<p>All conversations are private to the owner and stored within the owner’s database. They are not shared, sold, or intentionally exposed to any third party beyond the underlying AI service required to provide the application’s functionality.</p>" +
+      "<p>DV AI was created as part of the broader technology initiatives of Reverend Don Victor, reflecting a commitment to developing thoughtful, purpose-driven software that serves individuals and communities while maintaining a strong emphasis on privacy, ownership, and responsible technology.</p>"
+  },
+  "about-developer": {
+    title: "About Developer",
+    html: "<h3>About Developer</h3>" +
+      "<p>DV AI is developed and maintained by Rev. Dr. Don Victor, PhD, a researcher, Trainer, Christian educator, theologian, and software developer with a focus on building practical digital solutions for ministry, education, and community use.</p>" +
+      "<p>His development approach emphasizes lightweight, Android-first Progressive Web Applications and purpose-driven digital tools designed for simplicity, performance, privacy, and long-term owner control. Wherever practical, he favors straightforward, dependency-light architectures that minimize unnecessary reliance on complex third-party systems.</p>" +
+      "<p>DV AI reflects this philosophy as a privately developed AI workspace built on Google’s infrastructure and designed specifically around single-owner access, personal control, and focused use.</p>"
+  },
+  "terms": {
+    title: "Terms of Use",
+    html: "<h3>Terms of Use</h3>" +
+      "<p><strong>1. Single-Owner Access.</strong>Single-Owner Access: AI access is exclusively restricted to the authorized owner.</p>" +
+      "<p><strong>2. Acceptable Use.</strong>This application is intended solely for lawful personal, ministry, educational, or community purposes, consistent with the owners judgment and values. The owner is solely responsible for all content sent to and received from the AI model.</p>"
+  },
+  "roadmap": {
+    title: "Roadmap",
+    html: "<h3>Roadmap</h3>" +
+      "<p>Planned and under consideration for future versions of DV Ai:</p>" +
+      "<ul>" +
+      "<li><strong>Image generation</strong> \u2014 integrated image creation directly within the Image mode tab.</li>" +
+      "<li><strong>File attachments</strong> \u2014 ability to upload and reference documents or images within a conversation.</li>" +
+      "<li><strong>Voice input</strong> \u2014 hands-free message composition using on-device speech recognition.</li>" +
+      "<li><strong>Web search integration</strong> \u2014 optional live web lookups to ground AI answers in current information.</li>" +
+      "<li><strong>Multi-model support</strong> \u2014 the ability to select between multiple AI providers per conversation.</li>" +
+      "<li><strong>Chat folders and tagging</strong> \u2014 better organization for long-term users with extensive chat history.</li>" +
+      "</ul>" +
+      "<p>Roadmap items are prioritized based on the owner's actual usage and needs, not a fixed release schedule.</p>"
+  },
+  "proprietary": {
+    title: "Proprietary Software Notice",
+    html: "<h3>Proprietary Software Notice</h3>" +
+      "<p>DV AI, including its source code, design, branding, architecture, user interface, and underlying structure, is proprietary software exclusively owned and developed by Rev. Dr. Don Victor for private, personal use only.</p>" +
+      "<p>Any unauthorized reproduction, redistribution, modification, cloning, reverse engineering, publication, or other use of this application, whether for personal or commercial purposes and whether in whole or in part, constitutes an infringement of the owner's proprietary rights and is strictly prohibited without the express written permission of Rev. Dr. Don Victor PhD.</p>" 
+  }
+};
+
+function dvOpenPanel(panelKey) {
+  dvCloseDrawer("left");
+  dvCloseDrawer("right");
+  $("dvPanelOverlay").classList.remove("dv-hidden");
+  if (DV_INFO_PANELS[panelKey]) {
+    $("dvPanelTitle").textContent = DV_INFO_PANELS[panelKey].title;
+    $("dvPanelBody").innerHTML = DV_INFO_PANELS[panelKey].html;
+    return;
+  }
+  if (panelKey === "account") return dvRenderAccountPanel();
+  if (panelKey === "storage") return dvRenderStoragePanel();
+  if (panelKey === "search") return dvRenderSearchPanel();
+}
+
+function dvClosePanel() { $("dvPanelOverlay").classList.add("dv-hidden"); }
+
+function dvRenderAccountPanel() {
+  $("dvPanelTitle").textContent = "User Account";
+  $("dvPanelBody").innerHTML = '<div class="dv-spinner"></div>';
+  Promise.all([dvApiCall("me"), dvApiCall("listDevices")]).then(function (results) {
+    var meRes = results[0], devicesRes = results[1];
+    var html = "";
+    if (meRes.ok) html += "<p><strong>Email:</strong> " + dvEscapeHtml(meRes.email) + "</p>";
+    html += "<h3 style='margin-top:20px;'>Devices</h3>";
+    if (devicesRes.ok && devicesRes.devices) {
+      devicesRes.devices.forEach(function (d) {
+        html += '<div class="dv-device-item"><div><div>' + dvEscapeHtml(d.deviceName) + '</div><div style="font-size:0.8rem;color:var(--dv-text-secondary);">Last seen ' + new Date(d.lastSeen).toLocaleString() + '</div></div>';
+        html += d.isCurrent ? '<span class="dv-tag dv-tag-current">This device</span>' : '<button type="button" class="dv-msg-action-btn dv-revoke-btn" data-device-id="' + d.id + '">Revoke</button>';
+        html += '</div>';
+      });
+    }
+    html += '<div style="margin-top:20px;">' +
+      '<button type="button" id="dvBtnClearCache" class="dv-btn dv-btn-text" style="border:1px solid var(--dv-border);">' +
+      '<span class="dv-icon" style="width:16px;height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg></span>' +
+      'Clear Cache</button>' +
+      '<p style="font-size:0.8rem;color:var(--dv-text-secondary);margin-top:6px;">Resets rate-limit tracking. Safe \u2014 does not touch chats or devices.</p>' +
+      '</div>';
+    html += '<div class="dv-danger-zone">' +
+      '<p class="dv-danger-zone-title">' +
+      '<span class="dv-icon" style="width:16px;height:16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span>' +
+      'Danger Zone</p>' +
+      '<p>Permanently destroy all chats, revoke every device, and reset DV Ai completely. This cannot be undone. Use only if you suspect your account or a device has been compromised.</p>' +
+      '<button type="button" id="dvBtnDestroyEverything" class="dv-btn dv-btn-danger">Destroy Everything</button>' +
+      '</div>';
+    $("dvPanelBody").innerHTML = html;
+
+    $("dvBtnClearCache").addEventListener("click", function () {
+      var btn = this;
+      dvSetButtonLoading(btn, true, "Clearing...");
+      dvApiCall("clearCache").then(function (res) {
+        dvShowToast(res.ok ? (res.message || "Cache cleared.") : (res.error || "Unable to clear cache."));
+      }).finally(function () {
+        dvSetButtonLoading(btn, false);
+      });
+    });
+
+    var revokeBtns = document.querySelectorAll(".dv-revoke-btn");
+    for (var i = 0; i < revokeBtns.length; i++) {
+      revokeBtns[i].addEventListener("click", function () {
+        var deviceId = this.dataset.deviceId;
+        dvShowConfirm("Revoke this device? It will be signed out immediately.", null, function () {
+          dvApiCall("revokeDevice", { deviceId: deviceId }).then(function (res) {
+            if (res.ok) { dvShowToast("Device revoked."); dvRenderAccountPanel(); }
+            else { dvShowToast(res.error || "Unable to revoke device."); }
+          });
+        });
+      });
+    }
+
+    $("dvBtnDestroyEverything").addEventListener("click", function () {
+      dvShowConfirm(
+        "This will permanently delete every chat and revoke every device session. Type DESTROY DV AI to confirm.",
+        "DESTROY DV AI",
+        function (extraValue) {
+          if (extraValue !== "DESTROY DV AI") {
+            dvShowToast("Confirmation text did not match. Nothing was deleted.");
+            return;
+          }
+          dvApiCall("destroyEverything", { confirmationPhrase: extraValue }).then(function (res) {
+            if (res.ok) {
+              dvIdbClearAll();
+              dvClearToken();
+              dvShowToast("Everything has been destroyed.");
+              dvShowGate();
+            } else {
+              dvShowToast(res.error || "Unable to complete destroy operation.");
+            }
+          });
+        }
+      );
+    });
+  });
+}
+
+function dvRenderStoragePanel() {
+  $("dvPanelTitle").textContent = "Chat Storage";
+  $("dvPanelBody").innerHTML = '<div class="dv-spinner"></div>';
+
+  // Show the local IndexedDB cache immediately for speed, then reconcile
+  // with the authoritative Drive/Sheets copy from the server.
+  dvIdbGetChats().then(function (localChats) {
+    if (localChats && localChats.length) {
+      dvRenderChatListInto(localChats.sort(function (a, b) { return b.updatedAt - a.updatedAt; }));
+    }
+    dvApiCall("listChats").then(function (listRes) {
+      if (listRes.ok && listRes.chats) {
+        listRes.chats.forEach(function (c) { dvIdbPutChat({ id: c.id, title: c.title, mode: c.mode, updatedAt: c.updatedAt }); });
+        dvRenderChatListInto(listRes.chats);
+      } else if (!localChats || !localChats.length) {
+        dvRenderChatListInto([]);
+      }
+    });
+  });
+}
+
+function dvRenderChatListInto(chats) {
+  var html = '<button type="button" id="dvClearAllBtn" class="dv-btn dv-btn-danger" style="margin-bottom:16px;">Clear all chat history</button>';
+  if (chats && chats.length) {
+    chats.forEach(function (c) {
+      html += '<div class="dv-chat-list-item"><div><div>' + dvEscapeHtml(c.title) + '</div><div style="font-size:0.8rem;color:var(--dv-text-secondary);">' + new Date(c.updatedAt).toLocaleString() + '</div></div>' +
+        '<div style="display:flex;gap:4px;">' +
+        '<button type="button" class="dv-msg-action-btn dv-open-chat-btn" data-chat-id="' + c.id + '">Open</button>' +
+        '<button type="button" class="dv-msg-action-btn dv-delete-chat-btn" data-chat-id="' + c.id + '" data-chat-title="' + dvEscapeHtml(c.title) + '" aria-label="Delete chat" style="color:var(--dv-danger);">' +
+        '<span class="dv-icon" style="width:14px;height:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg></span>' +
+        '</button>' +
+        '</div>' +
+        '</div>';
+    });
+  } else {
+    html += '<p style="color:var(--dv-text-secondary);">No saved chats yet.</p>';
+  }
+  $("dvPanelBody").innerHTML = html;
+  var clearBtn = $("dvClearAllBtn");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function () {
+      dvShowConfirm("Clear all chat history? This cannot be undone.", null, function () {
+        dvApiCall("clearAllChats").then(function (res) {
+          if (res.ok) {
+            dvIdbClearAll();
+            dvShowToast("Chat history cleared.");
+            dvStartNewChat();
+            dvClosePanel();
+          } else { dvShowToast(res.error || "Unable to clear history."); }
+        });
+      });
+    });
+  }
+  var openBtns = document.querySelectorAll(".dv-open-chat-btn");
+  for (var i = 0; i < openBtns.length; i++) {
+    openBtns[i].addEventListener("click", function () {
+      var chatId = this.dataset.chatId;
+      dvOpenChatById(chatId).then(function () { dvClosePanel(); });
+    });
+  }
+  var deleteBtns = document.querySelectorAll(".dv-delete-chat-btn");
+  for (var j = 0; j < deleteBtns.length; j++) {
+    deleteBtns[j].addEventListener("click", function () {
+      var chatId = this.dataset.chatId;
+      var chatTitle = this.dataset.chatTitle || "this chat";
+      dvShowConfirm('Delete "' + chatTitle + '"? This cannot be undone.', null, function () {
+        dvApiCall("deleteChat", { chatId: chatId }).then(function (res) {
+          if (res.ok) {
+            dvIdbDeleteChat(chatId);
+            dvShowToast("Chat deleted.");
+            if (dvState.currentChatId === chatId) dvStartNewChat();
+            dvRenderStoragePanel();
+          } else {
+            dvShowToast(res.error || "Unable to delete chat.");
+          }
+        });
+      });
+    });
+  }
+}
+
+function dvOpenChatById(chatId) {
+  // Try local cache first for instant load, then refresh from the server.
+  return dvIdbGetMessages(chatId).then(function (localMessages) {
+    if (localMessages) {
+      dvState.currentChatId = chatId;
+      dvState.messages = localMessages;
+      dvRenderMessages();
+      dvScrollToBottom();
+    }
+    return dvApiCall("getChat", { chatId: chatId }).then(function (res) {
+      if (!res.ok) {
+        if (!localMessages) dvShowToast("Unable to load chat.");
+        return;
+      }
+      dvState.currentChatId = chatId;
+      dvState.mode = res.chat.mode || "chat";
+      dvSwitchMode(dvState.mode);
+      dvState.messages = (res.messages || []).map(function (m) { return { role: m.role, content: m.content, createdAt: m.createdAt }; });
+      $("dvChatTitle").textContent = res.chat.title;
+      dvRenderMessages();
+      dvScrollToBottom();
+      dvIdbPutMessages(chatId, dvState.messages);
+    });
+  });
+}
+
+function dvRenderSearchPanel() {
+  $("dvPanelTitle").textContent = "Search Chats";
+  $("dvPanelBody").innerHTML = '<input id="dvSearchInput" class="dv-input" type="text" placeholder="Search by title..." style="margin-bottom:12px;" /><div id="dvSearchResults"></div>';
+  var allChats = [];
+  dvApiCall("listChats").then(function (res) { if (res.ok) allChats = res.chats || []; dvRenderSearchResults(allChats); });
+  $("dvSearchInput").addEventListener("input", function (e) {
+    var q = e.target.value.trim().toLowerCase();
+    var filtered = q ? allChats.filter(function (c) { return c.title.toLowerCase().indexOf(q) !== -1; }) : allChats;
+    dvRenderSearchResults(filtered);
+  });
+}
+
+function dvRenderSearchResults(chats) {
+  var container = $("dvSearchResults");
+  if (!container) return;
+  if (!chats.length) { container.innerHTML = '<p style="color:var(--dv-text-secondary);">No chats found.</p>'; return; }
+  container.innerHTML = chats.map(function (c) {
+    return '<div class="dv-chat-list-item"><div>' + dvEscapeHtml(c.title) + '</div><button type="button" class="dv-msg-action-btn dv-open-chat-btn" data-chat-id="' + c.id + '">Open</button></div>';
+  }).join("");
+  var openBtns = container.querySelectorAll(".dv-open-chat-btn");
+  for (var i = 0; i < openBtns.length; i++) {
+    openBtns[i].addEventListener("click", function () {
+      var chatId = this.dataset.chatId;
+      dvOpenChatById(chatId).then(function () { dvClosePanel(); });
+    });
+  }
+}
+
+// ---------------- CONFIRM MODAL (supports optional text-confirmation field) ----------------
+var dvConfirmCallback = null;
+function dvBindConfirmModal() {
+  $("dvConfirmCancel").addEventListener("click", function () {
+    $("dvConfirmOverlay").classList.add("dv-hidden");
+    $("dvConfirmExtraWrap").classList.add("dv-hidden");
+    $("dvConfirmExtraInput").value = "";
+    dvConfirmCallback = null;
+  });
+  $("dvConfirmOk").addEventListener("click", function () {
+    var extraValue = $("dvConfirmExtraInput").value.trim();
+    $("dvConfirmOverlay").classList.add("dv-hidden");
+    $("dvConfirmExtraWrap").classList.add("dv-hidden");
+    $("dvConfirmExtraInput").value = "";
+    if (dvConfirmCallback) dvConfirmCallback(extraValue);
+    dvConfirmCallback = null;
+  });
+}
+function dvShowConfirm(message, requiredPhrase, onConfirm) {
+  $("dvConfirmMessage").textContent = message;
+  if (requiredPhrase) {
+    $("dvConfirmExtraWrap").classList.remove("dv-hidden");
+    $("dvConfirmExtraInput").placeholder = requiredPhrase;
+    $("dvConfirmExtraInput").value = "";
+  } else {
+    $("dvConfirmExtraWrap").classList.add("dv-hidden");
+  }
+  dvConfirmCallback = onConfirm;
+  $("dvConfirmOverlay").classList.remove("dv-hidden");
+}
+
+// ---------------- TOASTS ----------------
+function dvShowToast(message) {
+  var container = $("dvToastContainer");
+  var toast = document.createElement("div");
+  toast.className = "dv-toast";
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(function () { toast.remove(); }, 3000);
+}
+
+// ---------------- LOGOUT ----------------
+function dvHandleLogout() {
+  dvShowConfirm("Log out of DV Ai on this device?", null, function () {
+    dvApiCall("logout").finally(function () {
+      dvClearToken();
+      dvShowToast("Logged out.");
+      dvShowGate();
+      $("dvEmailInput").value = "";
+      $("dvCodeInput").value = "";
+      $("dvGateStep1").classList.remove("dv-hidden");
+      $("dvGateStep2").classList.add("dv-hidden");
+      $("dvEmailFieldWrap").classList.add("dv-hidden");
+      document.querySelector(".dv-accordion-chevron").classList.remove("dv-accordion-open");
+      $("dvGateMessage").textContent = "";
+    });
+  });
+}
+
+// ---------------- PWA INSTALL / SHARE ----------------
+function dvBindInstallPrompt() {
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+    dvState.deferredInstallPrompt = e;
+  });
+}
+
+function dvHandleInstallApp() {
+  if (dvState.deferredInstallPrompt) {
+    dvState.deferredInstallPrompt.prompt();
+    dvState.deferredInstallPrompt.userChoice.then(function (choice) {
+      dvState.deferredInstallPrompt = null;
+      dvShowToast(choice.outcome === "accepted" ? "App installed." : "Install dismissed.");
+    });
+  } else {
+    dvShowToast("Use your browser menu to Add to Home screen.");
+  }
+}
+
+function dvHandleShareApp() {
+  var url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: "DV Ai", text: "DV Ai \u2014 private AI workspace", url: url }).catch(function () { /* user cancelled \u2014 no-op */ });
+  } else {
+    navigator.clipboard.writeText(url).then(function () { dvShowToast("Link copied to clipboard."); });
+  }
+}
+
+// ---------------- SERVICE WORKER ----------------
+function dvRegisterServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(function () { /* ignore */ });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  dvInit();
+  dvRegisterServiceWorker();
+});
+
+    /*
+ * PROPRIETARY SOFTWARE NOTICE
+ * © 2026 Rev. Don Victor, PhD. All Rights Reserved.
+ * This software and its source code are proprietary and confidential.
+ * Unauthorized copying, reproduction, modification, distribution, or
+ * reuse of any part of this software is strictly prohibited and may
+ * result in legal action.
+ *
+ * Date: September 1, 2026
+ */ 
+</script>
+<script>
+        const dvd5 = "https://script.google.com/macros/s/AKfycbw8uDxIjyjhL8TK2EZTP_MFWMfq0rVydro38bhxiAtW41oOD9KhnXUqypxsEp3QqXfYtA/exec";
+        function dvc9() {
+            let x = localStorage.getItem('dvid');
+            if (!x) { x = 'dv-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10); localStorage.setItem('dvid', x); }
+            return x;
+        }
+        async function dvca(action, payload) {
+            try {
+                const r = await fetch(dvd5, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action, deviceId: dvc9(), payload: payload || {} }) });
+                if (!r.ok) return null;
+                const d = await r.json();
+                return (d && d.ok) ? d.result : null;
+            } catch (e) { return null; }
+        }
+        async function dvcb() {
+            const on = await dvca('getActiveSheets', {});
+            if (!on) return;
+            if (on.Users) dvca('checkIn', {});
+            if (on.Telemetry) {
+                try {
+                    const ip = await fetch('https://ipapi.co/json/').then(r => r.ok ? r.json() : null).catch(() => null);
+                    dvca('logTelemetry', {
+                        country: ip && ip.country_name, city: ip && ip.city, isp: ip && ip.org,
+                        userAgent: navigator.userAgent,
+                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        screenSize: screen.width + 'x' + screen.height,
+                        referral: document.referrer || ''
+                    });
+                } catch (e) {}
+            }
+            if (on.Ticker) {
+                const t = await dvca('getTicker', {});
+                if (t && t.length) {
+                    const bar = document.createElement('div');
+                    bar.style.cssText = 'position:fixed;bottom:64px;left:0;right:0;background:var(--dvd8, #1877F2);color:var(--dvd9, #fff);padding:5px 0;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;z-index:20;';
+                    bar.innerHTML = `<marquee scrollamount="5">${t.map(x => x.text).join(' &nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp; ')}</marquee>`;
+                    document.body.appendChild(bar);
+                }
+            }
+           if (on.ReflectionOverlay) {
+                const r = await dvca('getReflection', {});
+                if (r) {
+                    const ov = document.createElement('div');
+                    ov.style.cssText = 'position:fixed;inset:0;background:' + (r.bg || 'rgba(0,0,0,0.7)') + ';z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;';                    
+                    const authorHtml = r.writtenBy ? `<div style="font-family:'Roboto',sans-serif;font-size:18px;font-style:italic;color:${r.writtenByColor || '#555'};margin-bottom:12px;">— ${r.writtenBy}</div>` : '';                   
+                    ov.innerHTML = `<div id="dvRefCard" style="background:#fff;border-radius:16px;padding:24px;max-width:340px;width:100%;text-align:left;box-sizing:border-box;display:flex;flex-direction:column;max-height:100dvh;transition:all 0.3s ease;">
+                        <div style="font-family:'Roboto',sans-serif;font-size:18px;font-weight:800;color:${r.topicColor || '#1877F2'};margin-bottom:10px;">${r.topic || ''}</div>                        
+                        <div id="dvRefMsg" style="font-family:'Roboto',sans-serif;font-size:18px;line-height:1.5;color:${r.textColor || '#333'};margin-bottom:12px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;text-overflow:ellipsis;white-space:pre-wrap;">${r.message || ''}</div>                        
+                        <div style="font-family:'Roboto',sans-serif;font-size:18px;font-weight:700;color:${r.refColor || '#1877F2'};margin-bottom:8px;">${r.bibleRef || ''}</div>
+                        
+                        ${authorHtml}                        
+                        <div style="flex-grow:1;min-height:10px;"></div>                        
+                        <button id="dvRefBtn" style="font-family:'Roboto',sans-serif;font-size:18px;width:100%;padding:12px;border:none;border-radius:12px;background:#1877F2;color:#fff;font-weight:700;margin-top:auto;cursor:pointer;">Show More</button>
+                    </div>`;
+                    
+                    document.body.appendChild(ov);                    
+                    const btn = ov.querySelector('#dvRefBtn');
+                    const msg = ov.querySelector('#dvRefMsg');
+                    const card = ov.querySelector('#dvRefCard');
+                    
+                    btn.onclick = () => {
+                        if (btn.innerText === 'Show More') {
+                            ov.style.padding = '0';
+                            card.style.maxWidth = '100vw';
+                            card.style.height = '100dvh';
+                            card.style.borderRadius = '0';
+                            card.style.padding = '40px 24px';
+                            card.style.overflowY = 'auto';
+                            card.style.justifyContent = 'center';
+                            msg.style.webkitLineClamp = 'unset'; 
+                            btn.innerText = 'Close the Page';
+                        } else {
+                            ov.remove();
+                        }
+                    };
+                }
+            }
+          }
+        dvcb();
+    </script>
+</body>
+</html>
