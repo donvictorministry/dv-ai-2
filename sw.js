@@ -1,4 +1,4 @@
-const DV_CACHE_NAME = "dv-ai-shell-v1";
+const DV_CACHE_NAME = "dv-ai-shell-v1.2";
 const DV_SHELL_FILES = [
   "./",
   "./index.html",
